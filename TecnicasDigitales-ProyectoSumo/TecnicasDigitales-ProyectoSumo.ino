@@ -29,12 +29,11 @@ void setup() {
   pinMode(Trigger, OUTPUT); // trigger pin as output
   pinMode(Echo, INPUT);  // echo pin as input
   digitalWrite(Trigger, LOW); // initialize trigger at 0
-
 }
 
 
 void loop() {
-  turn();
+  
   long t; //tiempo que demora en llegar el eco
   long d; //distancia en centimetros
 
@@ -49,22 +48,25 @@ void loop() {
   Serial.print(d);      //Enviamos serialmente el valor de la distancia
   Serial.print("cm");
   Serial.println();
-  
-  if (d < 40){ // mientras el sensor no mida nada mas cerca que 40cm
+
+  if (d < 400){ // mientras el sensor no mida nada mas cerca que 40cm
+    brakeMotors();
+    delay(500);
     attack();
-    delay(1000); 
+    delay(2000); 
   }
 
+  turn();
   
 }
 void turn() {
+  robot.rotate(motor1, 60, CW);
   robot.brake(motor2);
-  robot.rotate(motor1, 50, CW); 
   }
 
 void attack() {
-  robot.rotate(motor1, 100, CCW);
-  robot.rotate(motor2, 100, CW);
+  robot.rotate(motor1, 80, CW);
+  robot.rotate(motor2, 80, CCW);
 }
 
 void brakeMotors(){
